@@ -1,0 +1,35 @@
+@page "{id:int}"
+@model DishDetailsModel
+@inject IDishService dishService
+@{
+    Dish dish = (await dishService.GetDish(Model.DishId))!;
+}
+<section class="container mx-auto py-4">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-4xl font-semibold mb-4">@dish.Name</h1>
+        </div>
+        <div class="inline-block bg-sky-600 shadow-md rounded hover:bg-sky-500 active:bg-sky-700 active:shadow-none active:translate-y-1 transition-all">
+            <a class="block py-3 px-6 text-white font-semibold" href="/menu/editdish/@dish.Id">Edit Dish</a>
+        </div>
+    </div>
+    <div class="flex gap-4">
+        <div>
+            <img src="@dish.Image" alt="@dish.Name" />
+        </div>
+        <div>
+            <div>
+                <h2 class="text-2xl">Ingredients</h2>
+                <p>@dish.Ingredients</p>
+            </div>
+            <div>
+                <h2 class="text-2xl">Calories</h2>
+                <p>@dish.Calories</p>
+            </div>
+            
+            <div>
+                <button class="mt-8 inline-block bg-red-600 shadow-md rounded hover:bg-red-500 active:bg-red-700 active:shadow-none active:translate-y-1 transition-all py-3 px-6 text-white font-semibold">Order Now for @String.Format("{0:c}", dish.Price)</button>
+            </div>
+        </div>
+    </div>
+</section>

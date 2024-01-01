@@ -1,0 +1,62 @@
+@page
+@inject IDishService DishService
+@{
+    ViewData["Title"] = "Menu";
+
+    const int DISH_LIMIT = 6;
+    IEnumerable<Dish> dishes = (await DishService.GetDishes());
+    int total = dishes.Count();
+    int pages = (int)Math.Ceiling(Convert.ToDouble(total) / DISH_LIMIT);
+    int currentPage = 1;
+
+    if (!string.IsNullOrEmpty(Request.Query["p"])) {
+        bool IsNumber = int.TryParse(Request.Query["p"], out int result);
+
+        if (IsNumber && result <= pages) 
+        {
+            currentPage = result;
+        }
+    }
+
+    IEnumerable<Dish> someDishes = dishes
+                                    .Skip((currentPage - 1) * DISH_LIMIT)
+                                    .Take(6);
+}
+
+<section class="container mx-auto py-4">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-4xl font-semibold mb-4">Menu</h1>
+            <p class="text-xl font-light">Find all our delicious food you can desire in our @total products.</p>
+        </div>
+        <div class="inline-block bg-sky-600 shadow-md rounded hover:bg-sky-500 active:bg-sky-700 active:shadow-none active:translate-y-1 transition-all">
+            <a class="block py-3 px-6 text-white font-semibold" href="/menu/createdish">Create New Dish</a>
+        </div>
+    </div>
+    <div class="grid grid-cols-3 grid-rows-2 gap-8 my-8 justify-items-center">
+        @foreach(Dish dish in someDishes)
+        {
+            <div class="bg-slate-200 p-4 text-center space-y-4 shadow-lg rounded w-80">
+                <div class="h-[150px]">
+                    <img class="object-cover w-full h-full" src="/img/food-dish.jpg" alt="food dish" />
+                </div>
+                <h3 class="text-xl font-semibold">@dish.Name</h3>
+                <div>
+                    <p>@dish.Ingredients</p>
+                    <p>@dish.Calories Calories</p>
+                </div>
+                <div class="inline-block bg-sky-600 shadow-md rounded hover:bg-sky-500 active:bg-sky-700 active:shadow-none active:translate-y-1 transition-all">
+                    <a class="block py-3 px-6 text-white" href="/menu/dishdetails/@dish.Id">View Dish</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="flex justify-center gap-2">
+        @foreach(int p in Enumerable.Range(1,pages)){
+            <a class="block px-4 py-2  @(p == currentPage ? "bg-black text-white" : "bg-slate-200") rounded" href="?p=@p">@p</a>
+        }
+    </div>
+    <div>
+        Newsletter goes here
+    </div>
+</section>

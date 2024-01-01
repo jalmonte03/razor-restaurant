@@ -1,0 +1,51 @@
+@page "{id}"
+@model EditDishModel
+@{
+    ViewData["Title"] = "Edit Dish";
+
+    if (Model.Dish == null) {
+        Redirect("/menu");
+    }
+}
+
+<section class="container mx-auto py-8">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-4xl font-semibold mb-4">Update Dish</h1>
+            <p class="text-xl font-light">Update a dish information to display in the restaurant</p>
+        </div>
+        <div class="inline-block bg-red-600 shadow-md rounded hover:bg-red-500 active:bg-red-700 active:shadow-none active:translate-y-1 transition-all">
+            <a class="block py-3 px-6 text-white font-semibold" href="/menu/deletedish/@Model.Dish.Id">Delete Dish</a>
+        </div>
+    </div>
+    <div>@ViewData["message"]</div>
+    <form class="mt-8" method="post">
+        <input type="hidden" name="Id" value="@Model.Dish!.Id" />
+        <div class="flex flex-col max-w-80 gap-2 text-xl">
+            <label class="font-semibold">Name</label>
+            <input class="px-2 py-2 rounded" asp-for="@Model.Dish.Name" />
+            <span asp-validation-for="@Model.Dish.Name"></span>
+        </div>
+        <div class="flex flex-col max-w-80 gap-2 text-xl">
+            <label class="font-semibold">Price</label>
+            <input class="px-2 py-2 rounded" asp-for="@Model.Dish.Price" />
+            <span asp-validation-for="@Model.Dish.Price"></span>
+        </div>
+        <div class="flex flex-col max-w-80 gap-2 text-xl">
+            <label class="font-semibold">Calories</label>
+            <input class="px-2 py-2 rounded" asp-for="@Model.Dish.Calories" />
+            <span asp-validation-for="@Model.Dish.Calories"></span>
+        </div>
+        <div class="flex flex-col max-w-80 gap-2 text-xl">
+            <label class="font-semibold">Image Url</label>
+            <input class="px-2 py-2 rounded" asp-for="@Model.Dish.Image" />
+            <span asp-validation-for="@Model.Dish.Image"></span>
+        </div>
+        <div class="flex flex-col max-w-96 gap-2 text-xl">
+            <label class="font-semibold">Ingredients</label>
+            <textarea class="px-2 py-2 rounded" asp-for="@Model.Dish.Ingredients"></textarea>
+            <span asp-validation-for="@Model.Dish.Ingredients"></span>
+        </div>
+        <input class="mt-8 inline-block bg-sky-600 shadow-md rounded hover:bg-sky-500 active:bg-sky-700 active:shadow-none active:translate-y-1 transition-all py-3 px-6 text-white font-semibold" value="Update Dish" type="submit" />
+    </form>
+</section>
