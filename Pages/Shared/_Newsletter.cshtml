@@ -1,12 +1,41 @@
-<section class="container mx-auto py-8">
+<section class="container mx-auto py-8 bg-slate-600 text-white p-8 rounded-lg mb-8 shadow-lg">
     <h2 class="text-[32px] font-semibold">Sign Up to our Newsletter</h2>
     <p>Don't miss the discount and promotions and sign up now!</p>
-    <form action="/" type="POST" class="mt-4">
-        <div>
-            <label for="newsletter_email">Email: </label>
-            <input id="newsletter_email" name="email" type="email" />
+    <form id="newsletter-form" type="post" class="mt-4">
+        <div class="flex items-center gap-4 mt-8">
+            @Html.AntiForgeryToken()
+            <input class="px-2 py-2 rounded w-96 text-black" id="newsletter_email" name="email" type="email" placeholder="email@test.com" />
+            <input class="inline-block bg-sky-600 shadow-md rounded hover:bg-sky-500 active:bg-sky-700 active:shadow-none active:translate-y-1 transition-all py-2 px-6 text-white font-semibold" type="submit" value="Sign Up" />
         </div>
-        
-        <input type="submit" value="Sign Up" />
+        <p class="text-sm mt-4">Don't worry no spam, we hate it more than you do</p>
     </form>
 </section>
+
+<script>
+    const newsletterForm = document.querySelector("#newsletter-form");
+
+    newsletterForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const antiforgeryToken = document.querySelector("input[name=\"__RequestVerificationToken\"]").value;
+        
+        const email = document.querySelector("#newsletter_email").value;
+
+        const formData = new FormData();
+        formData.append("email", email);
+        
+        const response = await fetch("/api/newsletter", {
+            method: "POST",
+            headers: {
+                RequestVerificationToken: antiforgeryToken,
+            },
+            body: formData
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            console.log("Data: ", data);
+        }
+    });
+</script>

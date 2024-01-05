@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<RestaurantContext>();
 builder.Services.AddTransient<IDishService, DishService>();
+builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<INewsletterService, NewsletterService>();
 
 var app = builder.Build();
 

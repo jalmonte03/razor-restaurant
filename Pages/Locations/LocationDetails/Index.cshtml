@@ -1,0 +1,33 @@
+@page "{id:int}"
+@inject ILocationService locationService
+@{
+    int id = Convert.ToInt32(RouteData.Values["id"]);
+    Location? location = await locationService.GetLocation(id);
+
+    if (location == null) RedirectToPage("../Index");
+}
+<section class="container mx-auto py-4">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-4xl font-semibold mb-4">@location!.Name</h1>
+        </div>
+        <div class="inline-block bg-sky-600 shadow-md rounded hover:bg-sky-500 active:bg-sky-700 active:shadow-none active:translate-y-1 transition-all">
+            <a class="block py-3 px-6 text-white font-semibold" href="/locations/editlocation/@location!.Id">Edit Location</a>
+        </div>
+    </div>
+    <div class="flex gap-4">
+        <div class="flex-1">
+            <img src="@location.LocationImage" alt="@location.Name" />
+        </div>
+        <div class="flex-1">
+            <div>
+                <h2 class="text-2xl">Address</h2>
+                <p>@location.StreetAddress @location.City, @location.State @location.ZipCode</p>
+            </div>
+            
+            <div>
+                <button class="mt-8 inline-block bg-red-600 shadow-md rounded hover:bg-red-500 active:bg-red-700 active:shadow-none active:translate-y-1 transition-all py-3 px-6 text-white font-semibold">Go to location</button>
+            </div>
+        </div>
+    </div>
+</section>

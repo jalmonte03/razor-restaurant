@@ -1,22 +1,18 @@
-@page "{id}"
-@model DeleteDishModel
+@page "{id:int}"
+@model DeleteLocationModel
 @{
-    ViewData["Title"] = "Delete Dish";
+    ViewData["Title"] = "Delete Location";
 }
-
 <section class="container mx-auto py-8">
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-4xl font-semibold mb-4">Are you sure to delete "@Model.Dish!.Name" </h1>
-            <p class="text-xl font-light text-red-600">Deleting this dish cant be undone. Do you want to proceed?</p>
-        </div>
-        <div class="inline-block bg-red-600 shadow-md rounded hover:bg-red-500 active:bg-red-700 active:shadow-none active:translate-y-1 transition-all">
-            <a class="block py-3 px-6 text-white font-semibold" href="/menu/deletedish/@Model.Dish.Id">Delete Dish</a>
+            <h1 class="text-4xl font-semibold mb-4">Are you sure to delete "@Model.location?.Name" </h1>
+            <p class="text-xl font-light text-red-600">Deleting this location can't be undone. Do you want to proceed?</p>
         </div>
     </div>
     <form class="flex gap-4" method="post" >
         <button asp-page-handler="delete" class="mt-8 inline-block bg-red-600 shadow-md rounded hover:bg-red-500 active:bg-red-700 active:shadow-none active:translate-y-1 transition-all py-3 px-6 text-white font-semibold">Yes</button>
         <button asp-page-handler="cancel" class="mt-8 inline-block bg-gray-600 shadow-md rounded hover:bg-gray-500 active:bg-gray-700 active:shadow-none active:translate-y-1 transition-all py-3 px-6 text-white font-semibold">No</button>
-        <input type="hidden" name="id" value="@Model.Dish.Id" />
+        <input type="hidden" name="id" value="@Model.location?.Id" />
     </form>
 </section>

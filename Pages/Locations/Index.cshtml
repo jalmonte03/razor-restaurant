@@ -1,6 +1,67 @@
 @page
+@inject ILocationService locationService
 @{
     ViewData["Title"] = "Locations";
+
+    const int LOCATION_LIMIT = 3;
+
+    IEnumerable<Location> locations = locationService.GetLocations();
+    int total = locations.Count();
+    int pages = (int)Math.Ceiling(Convert.ToDouble(total) / LOCATION_LIMIT);
+    int currentPage = 1;
+
+    if (!string.IsNullOrEmpty(Request.Query["p"])) {
+        bool IsNumber = int.TryParse(Request.Query["p"], out int result);
+
+        if (IsNumber && result <= pages) 
+        {
+            currentPage = result;
+        }
+    }
+
+    IEnumerable<Location> someLocations = locations
+                                    .Skip((currentPage - 1) * LOCATION_LIMIT)
+                                    .Take(6);
 }
 
-<p>Locations page</p>
+<section class="container mx-auto py-4">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-4xl font-semibold mb-4">Locations</h1>
+            <p class="text-xl font-light">Check our @total locations to start enjoying our food.</p>
+        </div>
+        <div class="inline-block bg-sky-600 shadow-md rounded hover:bg-sky-500 active:bg-sky-700 active:shadow-none active:translate-y-1 transition-all">
+            <a class="block py-3 px-6 text-white font-semibold" href="/locations/createlocation">Create New Location</a>
+        </div>
+    </div>
+    @if(total == 0)
+    {
+        <div>No Location available.</div>
+    }
+    else
+    {
+        <div class="flex justify-around my-8">
+        @foreach(Location l in locations)
+        {
+            <div class="bg-slate-200 p-4 text-center space-y-4 shadow-lg rounded max-w-xs">
+                <div class="h-[150px]">
+                    <img class="object-cover w-full h-full" src="/img/restaurant-outdoor.jpg" alt="food dish" />
+                </div>
+                <h3 class="text-xl font-semibold">@l.Name</h3>
+                <div>
+                    <p>@l.Phone</p>
+                    <p>@l.StreetAddress, @l.City, @l.State @l.ZipCode</p>
+                </div>
+                <div class="inline-block bg-sky-400 shadow-md rounded hover:bg-sky-300 active:bg-sky-600 active:shadow-none active:translate-y-1 transition-all">
+                    <a class="block py-3 px-6" href="/locations/locationdetails/@l.Id">View Now</a>
+                </div>
+            </div>
+        }
+        </div>
+        <div class="flex justify-center gap-2">
+            @foreach(int p in Enumerable.Range(1,pages)){
+                <a class="block px-4 py-2  @(p == currentPage ? "bg-black text-white" : "bg-slate-200") rounded" href="?p=@p">@p</a>
+            }
+        </div>    
+    }
+</section>

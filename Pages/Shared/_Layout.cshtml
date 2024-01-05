@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/tailwind/index.css" asp-append-version="true" />
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
     <partial name="_Header" />
-    <div class="bg-zinc-100">
+    <div class="bg-zinc-100 flex-1">
     @RenderBody()
     </div>
     <partial name="_Footer" />

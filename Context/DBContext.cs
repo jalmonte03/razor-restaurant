@@ -5,6 +5,8 @@ namespace Restaurant.Website.Shared;
 public class RestaurantContext : DbContext
 {
     public DbSet<Dish> dishes { get; set; }
+    public DbSet<Location> locations { get; set; }
+    public DbSet<Newsletter> newsletters { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -25,5 +27,9 @@ public class RestaurantContext : DbContext
                 price => decimal.ToInt32(price * 100),
                 price => ((decimal)(price))/100m
             );
+
+        modelBuilder.Entity<Newsletter>()
+            .HasIndex(newsletter => newsletter.Email)
+            .IsUnique();
     }
 }
