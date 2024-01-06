@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Restaurant.Website.Service;
 
 
-public class NewsletterPageModel : PageModel
+public class NewsletterApiPageModel : PageModel
 {
     private INewsletterService newsletterService;
 
-    public NewsletterPageModel(INewsletterService nS)
+    public NewsletterApiPageModel(INewsletterService nS)
     {
         this.newsletterService = nS;
     }

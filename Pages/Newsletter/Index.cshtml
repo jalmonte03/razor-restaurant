@@ -1,0 +1,35 @@
+@page
+@model NewsletterPageModel
+@{
+    ViewData["Title"] = "Newsletter List";
+}
+
+<div class="container mx-auto py-8">
+    <div>
+        <h1 class="text-4xl font-semibold mb-4">Newsletter List</h1>
+        <p class="text-xl font-light">The list of all email which will received all our promotional offers at launch.</p>
+    </div>
+    <div class="flex flex-col gap-4 my-8">
+        @if(Model.emailList.Count() != 0)
+        {
+            foreach(Newsletter email in Model.emailList)
+            {
+                <div class="flex justify-between bg-white px-8 py-4 rounded-md items-center shadow-md">
+                    <div class="text-xl">@email.Email</div>
+                    <a href="/newsletter/deletenewsletter/@email.Id" class="block border-red-600 text-red-600 py-2 px-8 rounded-md font-semibold border-2 cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300 active:bg-red-800 active:border-red-800 ease-in-out">
+                        Delete
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            <div>There is no email in the newsletter.</div>
+        }
+    </div>
+    <div class="flex justify-center gap-2">
+        @foreach(int p in Enumerable.Range(1,Model.TotalPages)){
+            <a class="block px-4 py-2  @(p == Model.CurrentPage ? "bg-black text-white" : "bg-slate-200") rounded" href="?p=@p">@p</a>
+        }
+    </div>
+</div>

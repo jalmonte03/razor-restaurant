@@ -21,7 +21,7 @@ public class NewsletterService : INewsletterService
         {
             Newsletter newsletter = new()
             {
-                Email = email,
+                Email = email.ToLower(),
                 Created = DateTime.Now
             };
 
@@ -49,11 +49,44 @@ public class NewsletterService : INewsletterService
 
     public bool DeleteEmail(int id)
     {
-        throw new NotImplementedException();
+        Newsletter foundEmail = db.newsletters.First(n => n.Id == id);
+
+        if (foundEmail != null)
+        {
+            db.newsletters.Remove(foundEmail);
+            int modified = db.SaveChanges();
+
+            if (modified == 1) 
+                return true;
+        }
+
+        return false;
     }
 
-    public IEnumerable<Newsletter> GetNewsletters()
+    public Newsletter? GetNewsletter(int id)
     {
-        throw new NotImplementedException();
+        Newsletter? newsletter = db.newsletters.First(n => n.Id == id);
+
+        if (newsletter != null)
+        {
+            return newsletter;
+        }
+
+        return null;
+    }
+
+    public (IEnumerable<Newsletter>, int) GetNewsletters(int currentPage, int limit = 5)
+    {
+        int emailCount = db.newsletters.Count();
+        IEnumerable<Newsletter> emailList = db.newsletters
+            .Skip(limit * (currentPage - 1))
+            .Take(limit);
+
+        if (emailList != null && emailList.Any())
+        {
+            return (emailList, emailCount);
+        }
+        
+        return (Enumerable.Empty<Newsletter>(), 0);
     }
 }

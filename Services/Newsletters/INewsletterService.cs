@@ -6,5 +6,6 @@ public interface INewsletterService
 {
     public bool AddEmail(string email);
     public bool DeleteEmail(int id);
-    public IEnumerable<Newsletter> GetNewsletters();
+    public (IEnumerable<Newsletter>, int) GetNewsletters(int currentPage, int limit);
+    public Newsletter? GetNewsletter(int id);
 }
